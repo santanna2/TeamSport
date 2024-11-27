@@ -1,136 +1,171 @@
 .home-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #282c34;
-    color: white;
-  }
-  
-  .logo {
-    height: 40px;
-  }
-  
-  .nav-bar {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .nav-bar a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .main-content {
-    display: flex;
-    flex: 1;
-  }
-  
-  .sidebar {
-    width: 20%;
-    padding: 20px;
-    background-color: #f4f4f4;
-  }
-  
-  .left-sidebar h3,
-  .right-sidebar h3 {
-    margin-bottom: 10px;
-  }
-  
-  .left-sidebar img.profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-  }
-  
-  .btn {
-    display: block;
-    margin: 10px 0;
-    padding: 10px 20px;
-    background-color: #61dafb;
-    color: #282c34;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .friends-list {
-    list-style: none;
-    padding: 0;
-    overflow-y: auto;
-    max-height: 150px;
-  }
-  
-  .friends-list li {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 0;
-  }
-  
-  .central-section {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-  }
-  
-  .progress-card,
-  .promo-card,
-  .match-card {
-    width: 200px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .right-sidebar .matches-list {
-    max-height: 100%;
-    overflow-y: auto;
-  }
-  
-  .footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #282c34;
-    color: white;
-  }
-  
-  .main-button {
-    padding: 10px 20px;
-    background-color: #61dafb;
-    color: #282c34;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .quick-actions {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .quick-actions button {
-    padding: 10px;
-    background-color: #61dafb;
-    color: #282c34;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #282c34;
+  color: white;
+}
+
+.logo {
+  height: 40px;
+}
+
+.nav-bar {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-bar a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 20%;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.left-sidebar h3,
+.right-sidebar h3 {
+  margin-bottom: 10px;
+}
+
+.left-sidebar img.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.btn {
+  display: block;
+  margin: 10px 0;
+  padding: 10px 20px;
+  background-color: #61dafb;
+  color: #282c34;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.friends-list {
+  list-style: none;
+  padding: 0;
+  overflow-y: auto;
+  max-height: 150px;
+}
+
+.friends-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.central-section {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.progress-card,
+.promo-card,
+.match-card {
+  width: 200px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.right-sidebar .matches-list {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.main-button {
+  padding: 10px 20px;
+  background-color: #61dafb;
+  color: #282c34;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  position: absolute; /* Ajustar la posición */
+  bottom: 20px; /* Ajustar la posición */
+  right: 20px; /* Ajustar la posición */
+}
+
+.cancel-button {
+  background-color: #ff4b4b;
+  color: white;
+}
+
+.quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quick-actions button {
+  padding: 10px;
+  background-color: #61dafb;
+  color: #282c34;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.options {
+  margin-top: 20px;
+}
+
+.options button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #61dafb;
+  color: #282c34;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+}
+
+.options h4 {
+  margin-bottom: 10px;
+  color: #282c34;
+  font-weight: bold;
+}
+
+.promotions {
+  margin-top: 20px;
+}
+
+.promo-card {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  color: #282c34;
+}

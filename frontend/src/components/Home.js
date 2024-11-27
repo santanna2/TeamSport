@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import { useNavigate } from 'react-router-dom';
 import './Home.css'; // Importa el archivo CSS para estilos
 
 const Home = ({ token }) => {
   const [userData, setUserData] = useState({});
-  const [showMatches, setShowMatches] = useState(false);
+  const [view, setView] = useState('progress'); // Controla la vista actual
   const [matches, setMatches] = useState([]);
+  const [showQuickActions, setShowQuickActions] = useState(false); // Controla la visibilidad de los botones rápidos
+  const [selectedSport, setSelectedSport] = useState(''); // Controla el deporte seleccionado
   const navigate = useNavigate(); // Usar hook useNavigate para la navegación
 
   useEffect(() => {
@@ -27,9 +29,8 @@ const Home = ({ token }) => {
   }, [token]);
 
   const handlePlayClick = async () => {
-    setShowMatches(!showMatches);
-
-    if (!showMatches) {
+    setShowQuickActions(!showQuickActions); // Mostrar u ocultar los botones rápidos
+    if (!showQuickActions) {
       try {
         const response = await axios.get('http://localhost:3001/matches', {
           headers: {
@@ -37,14 +38,65 @@ const Home = ({ token }) => {
           }
         });
         setMatches(response.data);
+        setView('matches');
       } catch (error) {
         console.error('Error fetching matches', error);
       }
+    } else {
+      setView('progress');
     }
+  };
+
+  const handleQuickActionClick = (action) => {
+    setView(action);
+    // Aquí puedes manejar cada acción individualmente si es necesario
+  };
+
+  const handleSportSelect = (sport) => {
+    setSelectedSport(sport);
   };
 
   const handleProfileClick = () => {
     navigate('/profile');
+  };
+
+  const renderSportOptions = () => {
+    switch (selectedSport) {
+      case 'Fútbol':
+        return (
+          <div className="options">
+            <h4>Posición</h4>
+            <label><input type="checkbox" /> Portero</label>
+            <label><input type="checkbox" /> Defensa</label>
+            <label><input type="checkbox" /> Centrocampista</label>
+            <label><input type="checkbox" /> Delantero</label>
+          </div>
+        );
+      case 'Baloncesto':
+        return (
+          <div className="options">
+            <h4>Posición</h4>
+            <label><input type="checkbox" /> Base</label>
+            <label><input type="checkbox" /> Escolta</label>
+            <label><input type="checkbox" /> Alero</label>
+            <label><input type="checkbox" /> Ala-Pívot</label>
+            <label><input type="checkbox" /> Pívot</label>
+          </div>
+        );
+      case 'Voleibol':
+        return (
+          <div className="options">
+            <h4>Posición</h4>
+            <label><input type="checkbox" /> Colocador</label>
+            <label><input type="checkbox" /> Opuesto</label>
+            <label><input type="checkbox" /> Central</label>
+            <label><input type="checkbox" /> Receptor</label>
+            <label><input type="checkbox" /> Líbero</label>
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -81,16 +133,7 @@ const Home = ({ token }) => {
 
         {/* Sección Central */}
         <section className="central-section">
-          <div className="progress-card">
-            <h3>Progreso Actual</h3>
-            <p>Completado 16/59</p>
-            {/* Añade más tarjetas de progreso aquí */}
-          </div>
-        </section>
-
-        {/* Panel Derecho */}
-        <aside className="sidebar right-sidebar">
-          {showMatches ? (
+          {view === 'matches' ? (
             <div className="matches-list">
               <h3>Partidos Disponibles</h3>
               {matches.map(match => (
@@ -103,6 +146,34 @@ const Home = ({ token }) => {
               ))}
             </div>
           ) : (
+            <div className="progress-card">
+              <h3>Progreso Actual</h3>
+              <p>Completado 16/59</p>
+              {/* Añade más tarjetas de progreso aquí */}
+            </div>
+          )}
+        </section>
+
+        {/* Panel Derecho */}
+        <aside className="sidebar right-sidebar">
+          {showQuickActions && (
+            <>
+              <div className="quick-actions">
+                <button onClick={() => handleQuickActionClick('matches')}>Buscar Partido</button>
+                <button onClick={() => handleQuickActionClick('matches')}>Crear Partido</button>
+                <button onClick={() => handleQuickActionClick('matches')}>Crear Grupo</button>
+              </div>
+              {/* Opciones adicionales sobre el tipo de deporte y otras opciones */}
+              <div className="options">
+                <h4>Tipo de Deporte</h4>
+                <button onClick={() => handleSportSelect('Fútbol')}>Fútbol</button>
+                <button onClick={() => handleSportSelect('Baloncesto')}>Baloncesto</button>
+                <button onClick={() => handleSportSelect('Voleibol')}>Voleibol</button>
+                {renderSportOptions()}
+              </div>
+            </>
+          )}
+          {!showQuickActions && (
             <div className="promotions">
               <h3>Promociones</h3>
               <div className="promo-card">
@@ -120,12 +191,9 @@ const Home = ({ token }) => {
 
       {/* Barra Inferior */}
       <footer className="footer">
-        <button className="main-button" onClick={handlePlayClick}>JUGAR</button>
-        <div className="quick-actions">
-          <button>Buscar Partido</button>
-          <button>Crear Partido</button>
-          <button>Crear Grupo</button>
-        </div>
+        <button className={`main-button ${showQuickActions ? 'cancel-button' : ''}`} onClick={handlePlayClick}>
+          {showQuickActions ? 'CANCELAR' : 'JUGAR'}
+        </button>
       </footer>
     </div>
   );
