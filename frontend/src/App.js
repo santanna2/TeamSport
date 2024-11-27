@@ -11,8 +11,12 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={token ? <Home token={token} /> : <div><Login setToken={setToken} /><Register /></div>} />
+        <Route 
+          path="/" 
+          element={token ? <Home token={token} /> : <Login setToken={setToken} />} 
+        />
         <Route path="/profile" element={<Profile token={token} />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );
