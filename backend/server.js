@@ -82,6 +82,34 @@ app.get('/me', authenticateToken, async (req, res) => {
   }
 });
 
+// Endpoint para actualizar la información del usuario
+app.put('/update', authenticateToken, async (req, res) => {
+  const { nombre, apellido, contrasena } = req.body;
+  const hashedPassword = await bcrypt.hash(contrasena, 10); // Encriptar la nueva contraseña
+  try {
+    const result = await pool.query(
+      'UPDATE usuario SET nombre = $1, apellido = $2, contrasena = $3 WHERE id_usuario = $4 RETURNING id_usuario',
+      [nombre, apellido, hashedPassword, req.user.userId]
+    );
+    res.json({ userId: result.rows[0].id_usuario });
+  } catch (err) {
+    console.error('Error en la actualización:', err); // Registrar el error detallado
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Endpoint para eliminar la cuenta del usuario
+app.delete('/delete', authenticateToken, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM usuario WHERE id_usuario = $1', [req.user.userId]);
+    res.status(204).send();
+  } catch (err) {
+    console.error('Error en la eliminación de cuenta:', err); // Registrar el error detallado
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 // Middleware para autenticar el token JWT
 function authenticateToken(req, res, next) {
   const token = req.header('Authorization').split(' ')[1];
