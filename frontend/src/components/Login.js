@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Login.css';
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
 
 const Login = ({ setToken }) => {
   const [nombreUsuario, setNombreUsuario] = useState('');
@@ -14,7 +14,7 @@ const Login = ({ setToken }) => {
         contrasena
       });
       setToken(response.data.token);
-      alert('Login exitoso');
+      alert('Inicio de sesión exitoso');
     } catch (error) {
       console.error('Error en el inicio de sesión:', error);
       alert('Inicio de sesión fallido');
@@ -22,20 +22,31 @@ const Login = ({ setToken }) => {
   };
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleLogin} className="login-form">
-        <label>
-          Nombre de Usuario:
-          <input type="text" value={nombreUsuario} onChange={(e) => setNombreUsuario(e.target.value)} />
-        </label>
-        <label>
-          Contraseña:
-          <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} />
-        </label>
-        <button type="submit" className="submit-button">Iniciar Sesión</button>
-        <p className="register-link">¿No tienes cuenta? <a href="/register">Regístrate</a></p>
-      </form>
-    </div>
+    <Container maxWidth="sm">
+      <Typography variant="h4" component="h1" gutterBottom>
+        Iniciar Sesión
+      </Typography>
+      <Box component="form" onSubmit={handleLogin} sx={{ mt: 3 }}>
+        <TextField
+          label="Nombre de Usuario"
+          value={nombreUsuario}
+          onChange={(e) => setNombreUsuario(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Contraseña"
+          type="password"
+          value={contrasena}
+          onChange={(e) => setContrasena(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <Button type="submit" variant="contained" color="primary" sx={{ mt: 3 }}>
+          Iniciar Sesión
+        </Button>
+      </Box>
+    </Container>
   );
 };
 

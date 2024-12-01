@@ -109,6 +109,29 @@ app.delete('/delete', authenticateToken, async (req, res) => {
   }
 });
 
+// Endpoint para crear un nuevo grupo
+app.post('/groups', authenticateToken, async (req, res) => {
+  const { nombre, descripcion } = req.body;
+
+  try {
+    // Establecer la configuración de la aplicación para el ID del usuario creador
+    await pool.query(`SET app.current_user_id = '${req.user.userId}'`);
+
+    const result = await pool.query(
+      'INSERT INTO grupo (nombre, descripcion) VALUES ($1, $2) RETURNING id_grupo',
+      [nombre, descripcion]
+    );
+
+    const groupId = result.rows[0].id_grupo;
+
+    res.status(201).json({ groupId });
+  } catch (err) {
+    console.error('Error en la creación del grupo:', err); // Registrar el error detallado
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 
 // Middleware para autenticar el token JWT
 function authenticateToken(req, res, next) {

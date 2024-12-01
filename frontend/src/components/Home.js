@@ -47,11 +47,6 @@ const Home = ({ token }) => {
     }
   };
 
-  const handleQuickActionClick = (action) => {
-    setView(action);
-    // Aquí puedes manejar cada acción individualmente si es necesario
-  };
-
   const handleSportSelect = (sport) => {
     setSelectedSport(sport);
   };
@@ -159,9 +154,9 @@ const Home = ({ token }) => {
           {showQuickActions && (
             <>
               <div className="quick-actions">
-                <button onClick={() => handleQuickActionClick('matches')}>Buscar Partido</button>
-                <button onClick={() => handleQuickActionClick('matches')}>Crear Partido</button>
-                <button onClick={() => handleQuickActionClick('matches')}>Crear Grupo</button>
+                <button onClick={() => setView('matches')}>Buscar Partido</button>
+                <button onClick={() => setView('matches')}>Crear Partido</button>
+                <button onClick={() => navigate('/create-group')}>Crear Grupo</button> {/* Enlace a crear grupo */}
               </div>
               {/* Opciones adicionales sobre el tipo de deporte y otras opciones */}
               <div className="options">

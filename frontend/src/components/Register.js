@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
-import './Register.css'; 
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
 
 const Register = () => {
   const [nombre, setNombre] = useState('');
@@ -10,28 +9,33 @@ const Register = () => {
   const [correoElectronico, setCorreoElectronico] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [nivel, setNivel] = useState('');
-  const navigate = useNavigate(); // Inicializa useNavigate
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
-    // Validar que todos los campos estén completos
-    if (!nombre || !apellido || !nombreUsuario || !correoElectronico || !contrasena || !nivel) {
-      alert('Todos los campos son obligatorios');
+    if (!nivel) {
+      alert('Por favor ingrese un nivel válido.');
       return;
     }
 
     try {
-      await axios.post('http://localhost:3001/register', {
+      console.log('Enviando datos:', {
         nombre,
         apellido,
         nombre_usuario: nombreUsuario,
         correo_electronico: correoElectronico,
         contrasena,
-        nivel
+        nivel: parseInt(nivel)
+      });
+      const response = await axios.post('http://localhost:3001/register', {
+        nombre,
+        apellido,
+        nombre_usuario: nombreUsuario,
+        correo_electronico: correoElectronico,
+        contrasena,
+        nivel: parseInt(nivel)
       });
       alert('Registro exitoso');
-      navigate('/'); // Redirige al login
+      console.log(response.data.userId);
     } catch (error) {
       console.error('Error en el registro:', error);
       alert('Registro fallido');
@@ -39,35 +43,61 @@ const Register = () => {
   };
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleRegister} className="register-form">
-        <label>
-          Nombre:
-          <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
-        </label>
-        <label>
-          Apellido:
-          <input type="text" value={apellido} onChange={(e) => setApellido(e.target.value)} />
-        </label>
-        <label>
-          Nombre de Usuario:
-          <input type="text" value={nombreUsuario} onChange={(e) => setNombreUsuario(e.target.value)} />
-        </label>
-        <label>
-          Correo Electrónico:
-          <input type="email" value={correoElectronico} onChange={(e) => setCorreoElectronico(e.target.value)} />
-        </label>
-        <label>
-          Contraseña:
-          <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} />
-        </label>
-        <label>
-          Nivel:
-          <input type="number" value={nivel} onChange={(e) => setNivel(e.target.value)} />
-        </label>
-        <button type="submit" className="submit-button">Registrarse</button>
-      </form>
-    </div>
+    <Container maxWidth="sm">
+      <Typography variant="h4" component="h1" gutterBottom>
+        Registro
+      </Typography>
+      <Box component="form" onSubmit={handleRegister} sx={{ mt: 3 }}>
+        <TextField
+          label="Nombre"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Apellido"
+          value={apellido}
+          onChange={(e) => setApellido(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Nombre de Usuario"
+          value={nombreUsuario}
+          onChange={(e) => setNombreUsuario(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Correo Electrónico"
+          type="email"
+          value={correoElectronico}
+          onChange={(e) => setCorreoElectronico(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Contraseña"
+          type="password"
+          value={contrasena}
+          onChange={(e) => setContrasena(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Nivel"
+          type="number"
+          value={nivel}
+          onChange={(e) => setNivel(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <Button type="submit" variant="contained" color="primary" sx={{ mt: 3 }}>
+          Registrarse
+        </Button>
+      </Box>
+    </Container>
   );
 };
 
