@@ -132,6 +132,37 @@ app.post('/groups', authenticateToken, async (req, res) => {
 });
 
 
+// Endpoint para obtener todos los grupos
+app.get('/groups', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM grupo');
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error('Error fetching groups:', err); // Registrar el error detallado
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Endpoint para unirse a un grupo (fichar por un equipo)
+app.post('/groups/join', authenticateToken, async (req, res) => {
+  const { groupId } = req.body;
+
+  try {
+    await pool.query(
+      'INSERT INTO equipo (id_grupo, id_usuario, condicion) VALUES ($1, $2, $3)',
+      [groupId, req.user.userId, 'Jugador']
+    );
+    res.status(200).json({ message: 'Te has unido al grupo con éxito' });
+  } catch (err) {
+    console.error('Error joining group:', err); // Registrar el error detallado
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
+
+
 
 // Middleware para autenticar el token JWT
 function authenticateToken(req, res, next) {

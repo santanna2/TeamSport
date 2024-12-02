@@ -87,7 +87,8 @@
 
 .progress-card,
 .promo-card,
-.match-card {
+.match-card,
+.group-card {
   width: 200px;
   padding: 20px;
   background-color: #fff;
@@ -99,6 +100,10 @@
 .right-sidebar .matches-list {
   max-height: 100%;
   overflow-y: auto;
+}
+
+.groups-list .group-card {
+  margin-bottom: 20px;
 }
 
 .main-button {

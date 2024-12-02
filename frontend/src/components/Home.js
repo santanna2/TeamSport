@@ -7,6 +7,7 @@ const Home = ({ token }) => {
   const [userData, setUserData] = useState({});
   const [view, setView] = useState('progress'); // Controla la vista actual
   const [matches, setMatches] = useState([]);
+  const [groups, setGroups] = useState([]); // Nueva variable para grupos
   const [showQuickActions, setShowQuickActions] = useState(false); // Controla la visibilidad de los botones rápidos
   const [selectedSport, setSelectedSport] = useState(''); // Controla el deporte seleccionado
   const navigate = useNavigate(); // Usar hook useNavigate para la navegación
@@ -44,6 +45,24 @@ const Home = ({ token }) => {
       }
     } else {
       setView('progress');
+    }
+  };
+
+  const handleQuickActionClick = async (action) => {
+    if (action === 'groups') {
+      try {
+        const response = await axios.get('http://localhost:3001/groups', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setGroups(response.data);
+        setView('groups');
+      } catch (error) {
+        console.error('Error fetching groups', error);
+      }
+    } else {
+      setView(action);
     }
   };
 
@@ -94,6 +113,29 @@ const Home = ({ token }) => {
     }
   };
 
+  const handleJoinGroup = async (groupId) => {
+    try {
+      await axios.post(
+        'http://localhost:3001/groups/join',
+        { groupId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      alert('Te has unido al grupo con éxito');
+    } catch (error) {
+      console.error('Error al unirse al grupo:', error);
+      alert('Error al unirse al grupo');
+    }
+  };
+
+  const handleViewGroup = (groupId) => {
+    // Implementa la lógica para ver detalles del grupo
+    console.log(`Ver detalles del grupo con ID: ${groupId}`);
+  };
+
   return (
     <div className="home-container">
       {/* Encabezado */}
@@ -140,6 +182,18 @@ const Home = ({ token }) => {
                 </div>
               ))}
             </div>
+          ) : view === 'groups' ? (
+            <div className="groups-list">
+              <h3>Grupos Disponibles</h3>
+              {groups.map(group => (
+                <div key={group.id_grupo} className="group-card">
+                  <h4>{group.nombre}</h4>
+                  <p>{group.descripcion}</p>
+                  <button onClick={() => handleViewGroup(group.id_grupo)}>Ver Grupo</button>
+                  <button onClick={() => handleJoinGroup(group.id_grupo)}>Fichar por el Equipo</button>
+                </div>
+              ))}
+            </div>
           ) : (
             <div className="progress-card">
               <h3>Progreso Actual</h3>
@@ -154,9 +208,10 @@ const Home = ({ token }) => {
           {showQuickActions && (
             <>
               <div className="quick-actions">
-                <button onClick={() => setView('matches')}>Buscar Partido</button>
-                <button onClick={() => setView('matches')}>Crear Partido</button>
-                <button onClick={() => navigate('/create-group')}>Crear Grupo</button> {/* Enlace a crear grupo */}
+                <button onClick={() => handleQuickActionClick('matches')}>Buscar Partido</button>
+                <button onClick={() => handleQuickActionClick('matches')}>Crear Partido</button>
+                <button onClick={() => handleQuickActionClick('groups')}>Buscar Grupo</button>
+                <button onClick={() => navigate('/create-group')}>Crear Grupo</button> {/* Botón de Crear Grupo */}
               </div>
               {/* Opciones adicionales sobre el tipo de deporte y otras opciones */}
               <div className="options">
@@ -184,8 +239,8 @@ const Home = ({ token }) => {
         </aside>
       </div>
 
-      {/* Barra Inferior */}
-      <footer className="footer">
+       {/* Barra Inferior */}
+       <footer className="footer">
         <button className={`main-button ${showQuickActions ? 'cancel-button' : ''}`} onClick={handlePlayClick}>
           {showQuickActions ? 'CANCELAR' : 'JUGAR'}
         </button>
